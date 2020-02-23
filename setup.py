@@ -19,14 +19,15 @@ setup(
 
     entry_points={
         'console_scripts': [
-            'slither = slither.cmd:main',
+            'slither = slither.grid:main',
         ],
     },
 
     install_requires=[
                       "argcomplete",
                       "z3-solver",
-                     ],
+                      "z3",
+    ],
     tests_require=[
                     "pytest",
                     "flake8",
