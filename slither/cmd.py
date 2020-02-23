@@ -102,6 +102,21 @@ class Grid:
                 self.line((x + 1, y), (x + 1, y + 1)),
                 ]
 
+    def print(self, dot_on, line_on):
+        for row in range(self.max_y + 1):
+            if row > 0:
+                for col in range(self.max_x + 1):
+                    if col > 0:
+                        print(self.cell(col - 1, row - 1), end="")
+                    print("|" if line_on(self.line((col, row - 1), (col, row))) else " ", end="")
+                print()
+            for col in range(self.max_x + 1):
+                if col > 0:
+                    print("-" if line_on(self.line((col - 1, row), (col, row))) else " ", end="")
+                print("*" if dot_on(self.dot(col, row)) else ".", end="")
+            print()
+
+
 def main(grid):
     """
 
@@ -196,18 +211,8 @@ def main(grid):
     # print(m)
 
     print()
-    for row in range(grid.max_y + 1):
-        if row > 0:
-            for col in range(grid.max_x + 1):
-                if col > 0:
-                    print(grid.cell(col - 1, row - 1), end="")
-                print("|" if m.eval(line[grid.line((col, row - 1), (col, row))]) else " ", end="")
-            print()
-        for col in range(grid.max_x + 1):
-            if col > 0:
-                print("-" if m.eval(line[grid.line((col - 1, row), (col, row))]) else " ", end="")
-            print("*" if m.eval(dot[grid.dot(col, row)]) else ".", end="")
-        print()
+    grid.print(dot_on=lambda d: m.eval(dot[d]),
+               line_on=lambda l: m.eval(line[l]))
 
 
 if __name__ == '__main__':
