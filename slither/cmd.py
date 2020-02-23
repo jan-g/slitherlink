@@ -67,31 +67,9 @@ def main(*grid):
               for dx, dy in ((-1, 0), (1, 0), (0, -1), (0, 1))
               if (l := line((x, y), (x+dx, y+dy))) is not None]
 
-        # # Compute all pairs of those lines, together with any spares
-        # pairs = {frozenset({l1, l2})
-        #          for l1 in ls
-        #          for l2 in ls
-        #          if l1 is not l2}
-        #
-        # print(x, y, len(pairs), pairs)
-        #
-        # options = []
-        # for wanted in pairs:
-        #     [l1, l2] = list(wanted)
-        #     # Construct "l1 and l2 and (not l3) and (not l4)"
-        #     positive = z3.And(*((ll if (ll is l1 or ll is l2) else z3.Not(ll)) for ll in ls))
-        #     options.append(positive)
-        #
-        # s.add(z3.Implies(dot(x, y), z3.Or(*options)))
-        #
-        # # However, if the dot is off, there's nothing coming out of here
-        # s.add(z3.Implies(z3.Not(dot(x, y)), z3.Not(z3.Or(*ls))))
-
         sm = z3.Sum(*(bool_to_int(l) for l in ls))
         s.add(z3.Implies(dot(x, y), sm == 2))
         s.add(z3.Implies(z3.Not(dot(x, y)), sm == 0))
-
-    print(s)
 
     # For each line: if it is activated, then the points at both ends are activated
     for x, y in itertools.product(XS, YS):
@@ -127,7 +105,6 @@ def main(*grid):
     for x, y in itertools.product(XS, YS):
         s.add(z3.Implies(dot(x, y), path_connected(dot_atom(x, y), dot_atom(x3, y3))))
         s.add(z3.Implies(z3.Not(dot(x, y)), z3.Not(path_connected(dot_atom(x, y), dot_atom(x3, y3)))))
-
 
     # Constrain the number of activated lines surrounding each known cell
     def line_count_of_cell(x, y):
