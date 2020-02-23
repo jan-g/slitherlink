@@ -1,4 +1,4 @@
-# Skeleton project
+# Slitherlink in Z3
 
 ## To install:
 
