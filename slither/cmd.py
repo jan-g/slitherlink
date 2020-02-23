@@ -91,7 +91,7 @@ def main(*grid):
             b = dot_atom(x2, y2)
             if (l := line((x, y), (x2, y2))) is None:
                 # These dots are never connected
-                s.add(connected(a, b) == False)
+                s.add(connected(a, b) != True)
             else:
                 s.add(z3.Implies(l, connected(a, b)))
                 s.add(z3.Implies(z3.Not(l), z3.Not(connected(a, b))))
@@ -153,3 +153,14 @@ if __name__ == '__main__':
          " 23 21 ",
          "3  1  3",
          " 21 23 ")
+
+    main("213     33",
+         "1    02  2",
+         "   0 2 1  ",
+         "  21 313  ",
+         "03       1",
+         "2       20",
+         "  011 20  ",
+         "  3 3 3   ",
+         "2  11    3",
+         "22     101")
